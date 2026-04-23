@@ -20,7 +20,7 @@ export function TopNav({ activeTab, walletLabel, onWalletAction, onTabChange }: 
         <div className="brand-glyph" aria-hidden="true">
           <span />
         </div>
-        <h1 className="brand-wordmark">BenmoSwap</h1>
+        <h1 className="brand-wordmark">Pangolins</h1>
       </div>
 
       <nav className="nav-pills" aria-label="Primary">

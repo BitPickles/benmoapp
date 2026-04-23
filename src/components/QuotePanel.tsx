@@ -39,7 +39,7 @@ export function QuotePanel({ quote }: QuotePanelProps) {
             <span>o Preserves Privacy</span>
           </div>
           <p className="hero-copy">
-            BenmoSwap looks for the best route for your trade among a variety of DEX aggregators, keeping the interface simple while the routing complexity stays behind the API boundary.
+            Pangolins looks for the best route for your trade among a variety of DEX aggregators, keeping the interface simple while the routing complexity stays behind the API boundary.
           </p>
           <p className="hero-link">Try it now or learn more</p>
         </>

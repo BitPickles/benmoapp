@@ -1,4 +1,4 @@
-# Benmo Swap Page MVP
+# Pangolins Swap Page MVP
 
 这是一个前端页面项目，用来演示“聚合器的聚合器” Swap 产品的主页面和核心状态流转。
 

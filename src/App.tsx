@@ -176,7 +176,7 @@ function App() {
     <>
       <div className="warning-banner">
         <span className="warning-pill">!</span>
-        Please make sure you are on benmo.app and check the URL carefully.
+        Please make sure you are on pangolins.app and check the URL carefully.
       </div>
 
       <main className="page-shell">

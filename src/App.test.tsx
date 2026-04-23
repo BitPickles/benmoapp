@@ -12,8 +12,8 @@ afterEach(() => {
 test('renders swap shell with intent form, quote panel and primary action', () => {
   render(<App />)
 
-  expect(screen.getByRole('heading', { name: /BenmoSwap/i })).toBeInTheDocument()
-  expect(screen.getByText(/Please make sure you are on benmo.app/i)).toBeInTheDocument()
+  expect(screen.getByRole('heading', { name: /Pangolins/i })).toBeInTheDocument()
+  expect(screen.getByText(/Please make sure you are on pangolins.app/i)).toBeInTheDocument()
   expect(screen.getByRole('button', { name: /Swap/i })).toBeInTheDocument()
   expect(screen.queryByRole('button', { name: /Gas Refuel/i })).not.toBeInTheDocument()
   const swapPanel = screen.getByRole('region', { name: /swap panel/i })

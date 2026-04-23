@@ -1,9 +1,9 @@
 const questions = [
   'What is this?',
-  'Does Benmo take any fees?',
+  'Does Pangolins take any fees?',
   'Is it safe?',
   'Why do gas fees in wallets not match what I see in the UI?',
-  'Will I be eligible for aggregator airdrops if I swap through Benmo?',
+  'Will I be eligible for aggregator airdrops if I swap through Pangolins?',
   'I swapped ETH on a solver route but it disappeared, what happened?',
 ]
 
