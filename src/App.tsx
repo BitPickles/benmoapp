@@ -174,11 +174,6 @@ function App() {
 
   return (
     <>
-      <div className="warning-banner">
-        <span className="warning-pill">!</span>
-        Please make sure you are on pangolins.app and check the URL carefully.
-      </div>
-
       <main className="page-shell">
         <div className="app-frame">
           <TopNav

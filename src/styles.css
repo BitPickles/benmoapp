@@ -34,30 +34,6 @@ input {
   min-height: 100vh;
 }
 
-.warning-banner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-height: 50px;
-  padding: 10px 16px;
-  background: #4b443d;
-  color: #ffe1a7;
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
-.warning-pill {
-  display: grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  background: #ffd98c;
-  color: #4d3921;
-  font-size: 0.9rem;
-}
-
 .page-shell {
   padding: 26px 28px 48px;
 }
