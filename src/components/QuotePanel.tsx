@@ -22,9 +22,18 @@ export function QuotePanel({ quote }: QuotePanelProps) {
         <>
           <h2 className="quote-heading">{quote.summary}</h2>
           <div className="benefit-row">
-            <span>o Best Return</span>
-            <span>o Gas Estimation</span>
-            <span>o Privacy Ready</span>
+            <span>
+              <span className="benefit-marker" aria-hidden="true" />
+              Best Return
+            </span>
+            <span>
+              <span className="benefit-marker" aria-hidden="true" />
+              Gas Estimation
+            </span>
+            <span>
+              <span className="benefit-marker" aria-hidden="true" />
+              Privacy Ready
+            </span>
           </div>
           <p className="hero-copy">
             Provider: {quote.providerName}. Quote ID: {quote.quoteId}. Continue in the left panel to walk through the mocked execution session.
@@ -32,16 +41,25 @@ export function QuotePanel({ quote }: QuotePanelProps) {
         </>
       ) : (
         <>
-          <h2 className="quote-heading">The Aggregator of Aggregators</h2>
+          <h2 className="quote-heading">Route clarity before every trade</h2>
           <div className="benefit-row">
-            <span>o Totally Free</span>
-            <span>o Gas Estimation</span>
-            <span>o Preserves Privacy</span>
+            <span>
+              <span className="benefit-marker" aria-hidden="true" />
+              Totally Free
+            </span>
+            <span>
+              <span className="benefit-marker" aria-hidden="true" />
+              Gas Estimation
+            </span>
+            <span>
+              <span className="benefit-marker" aria-hidden="true" />
+              Preserves Privacy
+            </span>
           </div>
           <p className="hero-copy">
-            Pangolins looks for the best route for your trade among a variety of DEX aggregators, keeping the interface simple while the routing complexity stays behind the API boundary.
+            Pangolins compares executable routes, estimated cost, and provider behavior behind a calmer interface for internal review.
           </p>
-          <p className="hero-link">Try it now or learn more</p>
+          <p className="hero-link">Review available routes</p>
         </>
       )}
     </section>

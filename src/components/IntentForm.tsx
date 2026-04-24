@@ -41,7 +41,7 @@ export function IntentForm({
             <span className="toggle-thumb" />
           </span>
           <button type="button" className="icon-button" aria-label="Settings">
-            *
+            <span className="icon-button-glyph icon-button-glyph--settings" aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -51,7 +51,7 @@ export function IntentForm({
           <span className="token-dot">E</span>
           Ethereum
         </span>
-        <span className="chevron">v</span>
+        <span className="chevron" aria-hidden="true" />
       </button>
 
       <div className="token-panel">
@@ -64,7 +64,7 @@ export function IntentForm({
             <span className="token-dot">E</span>
             ETH
           </span>
-          <span className="chevron">v</span>
+          <span className="chevron" aria-hidden="true" />
         </button>
       </div>
 
@@ -81,7 +81,7 @@ export function IntentForm({
       </div>
 
       <button type="button" className="swap-direction-button" aria-label="Flip tokens">
-        |
+        <span className="swap-direction-glyph" aria-hidden="true" />
       </button>
 
       <div className="token-panel token-panel--buy">
@@ -94,7 +94,7 @@ export function IntentForm({
             <span className="token-dot token-dot--buy">$</span>
             {quote ? 'USDC' : 'Select Token'}
           </span>
-          <span className="chevron">v</span>
+          <span className="chevron" aria-hidden="true" />
         </button>
       </div>
 

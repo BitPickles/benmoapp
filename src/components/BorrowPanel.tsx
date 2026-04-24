@@ -111,12 +111,12 @@ export function BorrowPanel() {
         ) : (
           <div className="borrow-empty-state">
             <div className="borrow-illustration" aria-hidden="true">
-              <span className="borrow-arrow borrow-arrow--top">↻</span>
+              <span className="borrow-arrow borrow-arrow--top" />
               <div className="borrow-token-pair">
                 <span className="borrow-token borrow-token--eth">E</span>
                 <span className="borrow-token borrow-token--stable">$</span>
               </div>
-              <span className="borrow-arrow borrow-arrow--bottom">↺</span>
+              <span className="borrow-arrow borrow-arrow--bottom" />
             </div>
 
             <p className="borrow-copy">Select a lending and borrowing token to see the available pairs.</p>

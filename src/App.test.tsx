@@ -18,8 +18,11 @@ test('renders swap shell with intent form, quote panel and primary action', () =
   const swapPanel = screen.getByRole('region', { name: /swap panel/i })
   expect(within(swapPanel).getByText(/You sell/i)).toBeInTheDocument()
   expect(within(swapPanel).getByText(/You buy/i)).toBeInTheDocument()
-  expect(screen.getByText(/The Aggregator of Aggregators/i)).toBeInTheDocument()
+  expect(screen.getByText(/Route clarity before every trade/i)).toBeInTheDocument()
   expect(within(swapPanel).getByRole('button', { name: /Connect Wallet/i })).toBeInTheDocument()
+  expect(screen.queryByRole('heading', { name: /^FAQ$/i })).not.toBeInTheDocument()
+  expect(screen.queryByText('What is this?')).not.toBeInTheDocument()
+  expect(screen.queryByText('Does Pangolins take any fees?')).not.toBeInTheDocument()
 })
 
 test('walks through the mocked quote and execution flow', async () => {

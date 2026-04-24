@@ -2,7 +2,6 @@ import { useEffect, useMemo, useReducer, useState } from 'react'
 import { BetaFootnote } from './components/BetaFootnote'
 import { BorrowPanel } from './components/BorrowPanel'
 import { EarnPanel } from './components/EarnPanel'
-import { FaqSection } from './components/FaqSection'
 import { IntentForm } from './components/IntentForm'
 import { QuotePanel } from './components/QuotePanel'
 import { TopNav, type AppTab } from './components/TopNav'
@@ -196,7 +195,6 @@ function App() {
                 <QuotePanel quote={state.quote} actionCopy={actionCopy} />
               </section>
 
-              <FaqSection />
               <BetaFootnote />
             </>
           ) : null}
