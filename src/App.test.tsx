@@ -106,7 +106,7 @@ test('reads the tab from the query string on first render', () => {
   expect(screen.getByText(/加载中\.\.\./i)).toBeInTheDocument()
 })
 
-test('switches to the borrow placeholder shell when the borrow tab is selected', async () => {
+test('loads the default curated borrow route when the borrow tab is selected', async () => {
   const user = userEvent.setup()
 
   render(<App />)
@@ -115,7 +115,9 @@ test('switches to the borrow placeholder shell when the borrow tab is selected',
 
   expect(screen.getByRole('button', { name: /^借贷$/i })).toHaveAttribute('aria-current', 'page')
   expect(screen.getByRole('region', { name: /借贷面板/i })).toBeInTheDocument()
-  expect(screen.getByText(/选择抵押资产和借出资产后查看可用路径。/i)).toBeInTheDocument()
+  expect(
+    await screen.findByRole('region', { name: /ethereum:aave:eth-usdc-core 路径卡片/i }),
+  ).toBeInTheDocument()
   expect(screen.queryByRole('region', { name: /兑换面板/i })).not.toBeInTheDocument()
 })
 

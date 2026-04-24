@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { fetchCuratedBorrowRoutes } from '../data/borrowApi'
 import {
   buildDefaultBorrowQuery,
@@ -54,15 +54,23 @@ export function BorrowPanel({ copy }: BorrowPanelProps) {
     setQuery((currentQuery) => ({ ...currentQuery, mode }))
   }
 
-  async function handleScan() {
+  async function scanBorrowRoutes(nextQuery = query) {
     const requestId = scanRequestIdRef.current + 1
     scanRequestIdRef.current = requestId
     setDisplayState({ kind: 'loading' })
-    const nextResult = await fetchCuratedBorrowRoutes(query)
+    const nextResult = await fetchCuratedBorrowRoutes(nextQuery)
     if (requestId !== scanRequestIdRef.current) {
       return
     }
     setDisplayState({ kind: 'ready', result: nextResult })
+  }
+
+  useEffect(() => {
+    void scanBorrowRoutes(query)
+  }, [])
+
+  async function handleScan() {
+    await scanBorrowRoutes(query)
   }
 
   return (
