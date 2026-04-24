@@ -47,7 +47,7 @@ export function IntentForm({
       <div className="token-panel">
         <div className="token-panel-copy">
           <span className="muted-label">{copy.youSell}</span>
-          <p className="amount-value">0</p>
+          <p className="amount-value">{quote ? quote.fromAmount : '0'}</p>
         </div>
         <button type="button" className="token-selector">
           <span className="token-chip">
@@ -77,12 +77,12 @@ export function IntentForm({
       <div className="token-panel token-panel--buy">
         <div className="token-panel-copy">
           <span className="muted-label">{copy.youBuy}</span>
-          <p className="amount-value amount-value--ghost">{quote ? '1,998.40' : '0'}</p>
+          <p className="amount-value amount-value--ghost">{quote ? quote.toAmount : '0'}</p>
         </div>
         <button type="button" className="token-selector">
           <span className="token-chip">
             <span className="token-dot token-dot--buy">$</span>
-            {quote ? 'USDC' : copy.selectToken}
+            {quote ? quote.toTokenSymbol : copy.selectToken}
           </span>
           <span className="chevron" aria-hidden="true" />
         </button>

@@ -1,5 +1,21 @@
 import { describe, expect, test } from 'vitest'
-import { createInitialSwapState, swapReducer } from './swapMachine'
+import { createInitialSwapState, swapReducer, type Quote } from './swapMachine'
+
+const quoteFixture: Quote = {
+  quoteId: 'qt_demo',
+  routeId: 'rt_best',
+  expiresAt: '2026-04-22T22:20:00Z',
+  providerName: 'OKX DEX',
+  summary: 'ETH -> USDC best route',
+  fromTokenSymbol: 'ETH',
+  toTokenSymbol: 'USDC',
+  fromAmount: '1.00',
+  toAmount: '1,998.40',
+  estimatedGasUsd: '$2.84',
+  priceImpactPercent: '0.04%',
+  liquiditySources: [{ name: 'Uniswap V3', percent: 100 }],
+  sourceKind: 'mock',
+}
 
 describe('swapMachine', () => {
   test('moves from unconnected to quote available through the quote flow', () => {
@@ -16,13 +32,7 @@ describe('swapMachine', () => {
 
     const quotedState = swapReducer(quotingState, {
       type: 'quote_succeeded',
-      quote: {
-        quoteId: 'qt_demo',
-        routeId: 'rt_best',
-        expiresAt: '2026-04-22T22:20:00Z',
-        providerName: 'Llama Meta',
-        summary: 'ETH -> USDC best route',
-      },
+      quote: quoteFixture,
     })
 
     expect(quotedState.quoteStatus).toBe('quote_available')
@@ -34,13 +44,7 @@ describe('swapMachine', () => {
       ...createInitialSwapState(),
       sessionStatus: 'connected' as const,
       quoteStatus: 'quote_available' as const,
-      quote: {
-        quoteId: 'qt_demo',
-        routeId: 'rt_best',
-        expiresAt: '2026-04-22T22:20:00Z',
-        providerName: 'Llama Meta',
-        summary: 'ETH -> USDC best route',
-      },
+      quote: quoteFixture,
     }
 
     const executionState = swapReducer(quotedState, {

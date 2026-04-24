@@ -1,5 +1,8 @@
 export {
   advanceMockExecution,
-  fetchMockQuote,
   startMockExecution,
 } from '../mocks/mockSwapData'
+export {
+  defaultDexQuoteIntent,
+  fetchDexQuote,
+} from './dexQuoteApi'

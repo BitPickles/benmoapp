@@ -5,7 +5,7 @@ import { EarnPanel } from './components/EarnPanel'
 import { IntentForm } from './components/IntentForm'
 import { QuotePanel } from './components/QuotePanel'
 import { TopNav, type AppTab } from './components/TopNav'
-import { advanceMockExecution, fetchMockQuote, startMockExecution } from './data/swapApi'
+import { advanceMockExecution, fetchDexQuote, startMockExecution } from './data/swapApi'
 import { createInitialSwapState, swapReducer } from './domain/swapMachine'
 import { copy as localizedCopy, type Language } from './i18n'
 
@@ -99,7 +99,7 @@ function App() {
 
     if (state.quoteStatus !== 'quote_available') {
       dispatch({ type: 'quote_requested' })
-      const quote = await fetchMockQuote()
+      const quote = await fetchDexQuote()
       dispatch({ type: 'quote_succeeded', quote })
       return
     }

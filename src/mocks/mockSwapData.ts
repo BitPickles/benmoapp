@@ -1,13 +1,30 @@
 import type { ExecutionSession, ExecutionStatus, NextAction, Quote } from '../domain/swapMachine'
 
+export const okxDemoQuote: Quote = {
+  quoteId: 'okx_demo_eth_usdc',
+  routeId: 'okx:ethereum:eth-usdc',
+  expiresAt: '2026-04-25T12:00:00.000Z',
+  providerName: 'OKX DEX',
+  summary: 'ETH -> USDC via OKX DEX',
+  fromTokenSymbol: 'ETH',
+  toTokenSymbol: 'USDC',
+  fromAmount: '1.00',
+  toAmount: '1,998.40',
+  estimatedGasUsd: '$2.84',
+  priceImpactPercent: '0.04%',
+  liquiditySources: [
+    { name: 'Uniswap V3', percent: 72 },
+    { name: 'Curve', percent: 28 },
+  ],
+  sourceKind: 'mock',
+}
+
+export function fetchOkxDemoQuote(): Promise<Quote> {
+  return Promise.resolve(okxDemoQuote)
+}
+
 export function fetchMockQuote(): Promise<Quote> {
-  return Promise.resolve({
-    quoteId: 'qt_demo',
-    routeId: 'rt_best',
-    expiresAt: '2026-04-22T22:20:00Z',
-    providerName: 'Llama Meta',
-    summary: 'ETH -> USDC best route',
-  })
+  return fetchOkxDemoQuote()
 }
 
 export function startMockExecution(): Promise<ExecutionSession> {

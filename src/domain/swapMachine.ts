@@ -13,12 +13,25 @@ export type ExecutionStatus =
   | 'terminal_failure'
 export type NextAction = 'approval' | 'message_sign' | 'sign_tx'
 
+export type QuoteLiquiditySource = {
+  name: string
+  percent: number
+}
+
 export type Quote = {
   quoteId: string
   routeId: string
   expiresAt: string
   providerName: string
   summary: string
+  fromTokenSymbol: string
+  toTokenSymbol: string
+  fromAmount: string
+  toAmount: string
+  estimatedGasUsd: string
+  priceImpactPercent: string
+  liquiditySources: QuoteLiquiditySource[]
+  sourceKind: 'bff' | 'mock'
 }
 
 export type ExecutionSession = {

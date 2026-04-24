@@ -40,6 +40,32 @@ export function QuotePanel({ quote, copy }: QuotePanelProps) {
           <p className="hero-copy">
             {copy.provider}: {quote.providerName}. {copy.quoteId}: {quote.quoteId}. {copy.continueFlow}
           </p>
+          <div className="quote-metric-grid">
+            <div className="quote-metric">
+              <span>{copy.metrics.received}</span>
+              <strong>
+                {quote.toAmount} {quote.toTokenSymbol}
+              </strong>
+            </div>
+            <div className="quote-metric">
+              <span>{copy.metrics.gas}</span>
+              <strong>{quote.estimatedGasUsd}</strong>
+            </div>
+            <div className="quote-metric">
+              <span>{copy.metrics.priceImpact}</span>
+              <strong>{quote.priceImpactPercent}</strong>
+            </div>
+          </div>
+          <div className="liquidity-route">
+            <p>{copy.liquiditySources}</p>
+            <div className="liquidity-source-list">
+              {quote.liquiditySources.map((source) => (
+                <span key={source.name}>
+                  {source.name} {source.percent}%
+                </span>
+              ))}
+            </div>
+          </div>
         </>
       ) : (
         <>

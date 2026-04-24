@@ -686,6 +686,66 @@ select:focus-visible {
   font-size: 0.96rem;
 }
 
+.quote-metric-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.quote-metric {
+  padding: 12px;
+  border: 1px solid rgba(31, 111, 91, 0.14);
+  border-radius: 10px;
+  background: rgba(246, 252, 247, 0.82);
+}
+
+.quote-metric span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.quote-metric strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font-size: 0.96rem;
+  font-weight: 900;
+}
+
+.liquidity-route {
+  position: relative;
+  z-index: 1;
+  margin-top: 16px;
+}
+
+.liquidity-route p {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.liquidity-source-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.liquidity-source-list span {
+  padding: 7px 10px;
+  border: 1px solid rgba(31, 111, 91, 0.16);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--accent-strong);
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
 .hero-link {
   position: relative;
   z-index: 1;
@@ -1148,6 +1208,10 @@ select:focus-visible {
 
   .quote-heading {
     font-size: 2rem;
+  }
+
+  .quote-metric-grid {
+    grid-template-columns: 1fr;
   }
 
   .amount-value {

@@ -52,6 +52,14 @@ test('walks through the mocked quote and execution flow', async () => {
 
   await user.click(within(swapPanel).getByRole('button', { name: /获取报价/i }))
   expect(await screen.findByRole('heading', { name: /ETH -> USDC 最优路径/i })).toBeInTheDocument()
+  expect(screen.getByText(/供应商: OKX DEX/i)).toBeInTheDocument()
+  expect(screen.getByText(/^预计收到$/i)).toBeInTheDocument()
+  expect(screen.getByText(/1,998\.40 USDC/i)).toBeInTheDocument()
+  expect(screen.getByText(/^预估 Gas$/i)).toBeInTheDocument()
+  expect(screen.getByText(/\$2\.84/i)).toBeInTheDocument()
+  expect(screen.getByText(/^价格影响$/i)).toBeInTheDocument()
+  expect(screen.getByText(/0\.04%/i)).toBeInTheDocument()
+  expect(screen.getByText(/Uniswap V3 72%/i)).toBeInTheDocument()
   expect(within(swapPanel).getByRole('button', { name: /开始兑换/i })).toBeInTheDocument()
 
   await user.click(within(swapPanel).getByRole('button', { name: /开始兑换/i }))

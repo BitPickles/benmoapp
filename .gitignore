@@ -4,3 +4,4 @@ dist/
 *.tsbuildinfo
 reference-pangolins-light-*.png
 reference-pangolins-bilingual-*.png
+reference-pangolins-okx-*.png
