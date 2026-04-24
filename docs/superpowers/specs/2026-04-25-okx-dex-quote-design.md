@@ -14,7 +14,7 @@ Add a first-stage OKX DEX integration for the Swap page that demonstrates real a
 
 ## Architecture
 
-The frontend calls a local quote adapter. The adapter first tries `POST /api/dex/quote`; if the endpoint is missing, unavailable, or returns an invalid shape, it returns a curated OKX demo quote. The BFF will own OKX API credentials and signing.
+The frontend calls a local quote adapter. The adapter first tries the configured `VITE_DEX_QUOTE_ENDPOINT`; if it is unset, it tries `POST /api/dex/quote`; if the endpoint is missing, unavailable, or returns an invalid shape, it returns a curated OKX demo quote. The BFF owns OKX API credentials and signing.
 
 ```mermaid
 flowchart LR
@@ -70,10 +70,19 @@ Response:
 
 ## OKX BFF Notes
 
-- OKX DEX Quote API endpoint: `GET https://web3.okx.com/api/v6/dex/aggregator/quote`.
+- OKX DEX Quote API endpoint: `GET https://web3.okx.com/api/v5/dex/aggregator/quote`.
 - The BFF must add `OK-ACCESS-KEY`, `OK-ACCESS-SIGN`, `OK-ACCESS-PASSPHRASE`, and `OK-ACCESS-TIMESTAMP`.
 - The signature is HMAC SHA256 over `timestamp + method + requestPath + body`, Base64 encoded.
 - The frontend must never receive or store OKX API credentials.
+
+## Implemented Worker
+
+- Worker path: `workers/okx-dex-quote`.
+- Public route: `POST /api/dex/quote`.
+- Required Cloudflare secrets: `OKX_API_KEY`, `OKX_SECRET_KEY`, `OKX_PASSPHRASE`.
+- Optional Worker variable: `ALLOWED_ORIGINS`.
+- GitHub Pages build variable: repository variable `DEX_QUOTE_ENDPOINT`, injected as `VITE_DEX_QUOTE_ENDPOINT`.
+- The Worker only calls OKX quote. It does not call swap, approve, instruction, or broadcast endpoints.
 
 ## UI Behavior
 

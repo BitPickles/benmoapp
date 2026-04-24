@@ -16,7 +16,7 @@ export type DexQuoteIntent = {
 
 type Fetcher = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
 
-export const defaultDexQuoteEndpoint = '/api/dex/quote'
+export const defaultDexQuoteEndpoint = import.meta.env.VITE_DEX_QUOTE_ENDPOINT?.trim() || '/api/dex/quote'
 
 export const defaultDexQuoteIntent: DexQuoteIntent = {
   chainIndex: '1',
