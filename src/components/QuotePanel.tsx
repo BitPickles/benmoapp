@@ -1,13 +1,15 @@
 import type { Quote } from '../domain/swapMachine'
+import type { AppCopy } from '../i18n'
 
 type QuotePanelProps = {
   quote: Quote | null
   actionCopy: { title: string; body: string } | null
+  copy: AppCopy['quote']
 }
 
 const logos = ['U', 'K', 'B', 'A', 'C']
 
-export function QuotePanel({ quote }: QuotePanelProps) {
+export function QuotePanel({ quote, copy }: QuotePanelProps) {
   return (
     <section className="quote-card">
       <div className="logo-strip" aria-hidden="true">
@@ -20,46 +22,46 @@ export function QuotePanel({ quote }: QuotePanelProps) {
 
       {quote ? (
         <>
-          <h2 className="quote-heading">{quote.summary}</h2>
+          <h2 className="quote-heading">{copy.quotedHeading}</h2>
           <div className="benefit-row">
             <span>
               <span className="benefit-marker" aria-hidden="true" />
-              Best Return
+              {copy.benefits.bestReturn}
             </span>
             <span>
               <span className="benefit-marker" aria-hidden="true" />
-              Gas Estimation
+              {copy.benefits.gas}
             </span>
             <span>
               <span className="benefit-marker" aria-hidden="true" />
-              Privacy Ready
+              {copy.benefits.privacy}
             </span>
           </div>
           <p className="hero-copy">
-            Provider: {quote.providerName}. Quote ID: {quote.quoteId}. Continue in the left panel to walk through the mocked execution session.
+            {copy.provider}: {quote.providerName}. {copy.quoteId}: {quote.quoteId}. {copy.continueFlow}
           </p>
         </>
       ) : (
         <>
-          <h2 className="quote-heading">Route clarity before every trade</h2>
+          <h2 className="quote-heading">{copy.initialHeading}</h2>
           <div className="benefit-row">
             <span>
               <span className="benefit-marker" aria-hidden="true" />
-              Totally Free
+              {copy.benefits.free}
             </span>
             <span>
               <span className="benefit-marker" aria-hidden="true" />
-              Gas Estimation
+              {copy.benefits.gas}
             </span>
             <span>
               <span className="benefit-marker" aria-hidden="true" />
-              Preserves Privacy
+              {copy.benefits.privacy}
             </span>
           </div>
           <p className="hero-copy">
-            Pangolins compares executable routes, estimated cost, and provider behavior behind a calmer interface for internal review.
+            {copy.initialBody}
           </p>
-          <p className="hero-link">Review available routes</p>
+          <p className="hero-link">{copy.link}</p>
         </>
       )}
     </section>

@@ -16,15 +16,25 @@ type BorrowRouteCardProps = {
   title: string
   subtitle: string
   metrics: BorrowRouteMetric[]
+  protocolLabel: string
+  marketKeyLabel: string
+  routeCardLabel: string
 }
 
-export function BorrowRouteCard({ title, subtitle, metrics }: BorrowRouteCardProps) {
+export function BorrowRouteCard({
+  title,
+  subtitle,
+  metrics,
+  protocolLabel,
+  marketKeyLabel,
+  routeCardLabel,
+}: BorrowRouteCardProps) {
   return (
-    <section className="borrow-route-card" aria-label={`${subtitle} route card`}>
+    <section className="borrow-route-card" aria-label={`${subtitle} ${routeCardLabel}`}>
       <header className="borrow-route-card__header">
-        <p className="borrow-route-card__eyebrow">Protocol</p>
+        <p className="borrow-route-card__eyebrow">{protocolLabel}</p>
         <h3 className="borrow-route-card__title">{title}</h3>
-        <p className="borrow-route-card__eyebrow">Market Key</p>
+        <p className="borrow-route-card__eyebrow">{marketKeyLabel}</p>
         <p className="borrow-route-card__subtitle">{subtitle}</p>
       </header>
 

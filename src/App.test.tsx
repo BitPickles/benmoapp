@@ -13,59 +13,75 @@ test('renders swap shell with intent form, quote panel and primary action', () =
   render(<App />)
 
   expect(screen.getByRole('heading', { name: /Pangolins/i })).toBeInTheDocument()
-  expect(screen.getByRole('button', { name: /Swap/i })).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: /^兑换$/i })).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: /^中文$/i })).toHaveAttribute('aria-pressed', 'true')
+  expect(screen.getByRole('button', { name: /^English$/i })).toBeInTheDocument()
   expect(screen.queryByRole('button', { name: /Gas Refuel/i })).not.toBeInTheDocument()
-  const swapPanel = screen.getByRole('region', { name: /swap panel/i })
-  expect(within(swapPanel).getByText(/You sell/i)).toBeInTheDocument()
-  expect(within(swapPanel).getByText(/You buy/i)).toBeInTheDocument()
-  expect(screen.getByText(/Route clarity before every trade/i)).toBeInTheDocument()
-  expect(within(swapPanel).getByRole('button', { name: /Connect Wallet/i })).toBeInTheDocument()
+  const swapPanel = screen.getByRole('region', { name: /兑换面板/i })
+  expect(within(swapPanel).getByText(/出售/i)).toBeInTheDocument()
+  expect(within(swapPanel).getByText(/买入/i)).toBeInTheDocument()
+  expect(screen.getByText(/每次交易前，看清路径/i)).toBeInTheDocument()
+  expect(within(swapPanel).getByRole('button', { name: /连接钱包/i })).toBeInTheDocument()
   expect(screen.queryByRole('heading', { name: /^FAQ$/i })).not.toBeInTheDocument()
   expect(screen.queryByText('What is this?')).not.toBeInTheDocument()
   expect(screen.queryByText('Does Pangolins take any fees?')).not.toBeInTheDocument()
+})
+
+test('switches visible product copy to English', async () => {
+  const user = userEvent.setup()
+
+  render(<App />)
+
+  await user.click(screen.getByRole('button', { name: /^English$/i }))
+
+  expect(screen.getByRole('button', { name: /^Swap$/i })).toHaveAttribute('aria-current', 'page')
+  expect(screen.getByRole('button', { name: /^English$/i })).toHaveAttribute('aria-pressed', 'true')
+  const swapPanel = screen.getByRole('region', { name: /swap panel/i })
+  expect(within(swapPanel).getByText(/You sell/i)).toBeInTheDocument()
+  expect(screen.getByText(/Route clarity before every trade/i)).toBeInTheDocument()
 })
 
 test('walks through the mocked quote and execution flow', async () => {
   const user = userEvent.setup()
 
   render(<App />)
-  const swapPanel = screen.getByRole('region', { name: /swap panel/i })
+  const swapPanel = screen.getByRole('region', { name: /兑换面板/i })
 
-  await user.click(within(swapPanel).getByRole('button', { name: /Connect Wallet/i }))
-  expect(within(swapPanel).getByRole('button', { name: /Get Quotes/i })).toBeInTheDocument()
+  await user.click(within(swapPanel).getByRole('button', { name: /连接钱包/i }))
+  expect(within(swapPanel).getByRole('button', { name: /获取报价/i })).toBeInTheDocument()
 
-  await user.click(within(swapPanel).getByRole('button', { name: /Get Quotes/i }))
-  expect(await screen.findByRole('heading', { name: /ETH -> USDC best route/i })).toBeInTheDocument()
-  expect(within(swapPanel).getByRole('button', { name: /Start Swap/i })).toBeInTheDocument()
+  await user.click(within(swapPanel).getByRole('button', { name: /获取报价/i }))
+  expect(await screen.findByRole('heading', { name: /ETH -> USDC 最优路径/i })).toBeInTheDocument()
+  expect(within(swapPanel).getByRole('button', { name: /开始兑换/i })).toBeInTheDocument()
 
-  await user.click(within(swapPanel).getByRole('button', { name: /Start Swap/i }))
-  expect(await within(swapPanel).findByText(/Approve token before swap/i)).toBeInTheDocument()
-  expect(within(swapPanel).getByRole('button', { name: /Approve/i })).toBeInTheDocument()
+  await user.click(within(swapPanel).getByRole('button', { name: /开始兑换/i }))
+  expect(await within(swapPanel).findByText(/先授权代币/i)).toBeInTheDocument()
+  expect(within(swapPanel).getByRole('button', { name: /授权/i })).toBeInTheDocument()
 })
 
 test('completes the mocked execution path through signature and confirmation', async () => {
   const user = userEvent.setup()
 
   render(<App />)
-  const swapPanel = screen.getByRole('region', { name: /swap panel/i })
+  const swapPanel = screen.getByRole('region', { name: /兑换面板/i })
 
-  await user.click(within(swapPanel).getByRole('button', { name: /Connect Wallet/i }))
-  await user.click(within(swapPanel).getByRole('button', { name: /Get Quotes/i }))
-  await user.click(within(swapPanel).getByRole('button', { name: /Start Swap/i }))
-  await user.click(within(swapPanel).getByRole('button', { name: /Approve/i }))
+  await user.click(within(swapPanel).getByRole('button', { name: /连接钱包/i }))
+  await user.click(within(swapPanel).getByRole('button', { name: /获取报价/i }))
+  await user.click(within(swapPanel).getByRole('button', { name: /开始兑换/i }))
+  await user.click(within(swapPanel).getByRole('button', { name: /授权/i }))
 
-  expect(await within(swapPanel).findByText(/Sign order intent before execution/i)).toBeInTheDocument()
-  expect(within(swapPanel).getByRole('button', { name: /Sign Intent/i })).toBeInTheDocument()
+  expect(await within(swapPanel).findByText(/签署订单意图/i)).toBeInTheDocument()
+  expect(within(swapPanel).getByRole('button', { name: /签署意图/i })).toBeInTheDocument()
 
-  await user.click(within(swapPanel).getByRole('button', { name: /Sign Intent/i }))
-  expect(await within(swapPanel).findByText(/Approve the on-chain swap transaction/i)).toBeInTheDocument()
-  expect(within(swapPanel).getByRole('button', { name: /Sign Transaction/i })).toBeInTheDocument()
+  await user.click(within(swapPanel).getByRole('button', { name: /签署意图/i }))
+  expect(await within(swapPanel).findByText(/签署链上兑换交易/i)).toBeInTheDocument()
+  expect(within(swapPanel).getByRole('button', { name: /签署交易/i })).toBeInTheDocument()
 
-  await user.click(within(swapPanel).getByRole('button', { name: /Sign Transaction/i }))
-  expect(await within(swapPanel).findByText(/Waiting for on-chain confirmation/i)).toBeInTheDocument()
+  await user.click(within(swapPanel).getByRole('button', { name: /签署交易/i }))
+  expect(await within(swapPanel).findByText(/等待链上确认/i)).toBeInTheDocument()
 
-  await user.click(within(swapPanel).getByRole('button', { name: /Mark Confirmed/i }))
-  expect(await within(swapPanel).findByRole('button', { name: /Swap Complete/i })).toBeInTheDocument()
+  await user.click(within(swapPanel).getByRole('button', { name: /标记确认/i }))
+  expect(await within(swapPanel).findByRole('button', { name: /兑换完成/i })).toBeInTheDocument()
 })
 
 test('switches to the earn loading shell when the earn tab is selected', async () => {
@@ -73,12 +89,12 @@ test('switches to the earn loading shell when the earn tab is selected', async (
 
   render(<App />)
 
-  await user.click(screen.getByRole('button', { name: /^Earn$/i }))
+  await user.click(screen.getByRole('button', { name: /^赚取$/i }))
 
-  expect(screen.getByRole('button', { name: /^Earn$/i })).toHaveAttribute('aria-current', 'page')
-  expect(screen.getByText(/Loading\.\.\./i)).toBeInTheDocument()
-  expect(screen.getByRole('region', { name: /earn panel/i })).toBeInTheDocument()
-  expect(screen.queryByRole('region', { name: /swap panel/i })).not.toBeInTheDocument()
+  expect(screen.getByRole('button', { name: /^赚取$/i })).toHaveAttribute('aria-current', 'page')
+  expect(screen.getByText(/加载中\.\.\./i)).toBeInTheDocument()
+  expect(screen.getByRole('region', { name: /赚取面板/i })).toBeInTheDocument()
+  expect(screen.queryByRole('region', { name: /兑换面板/i })).not.toBeInTheDocument()
 })
 
 test('reads the tab from the query string on first render', () => {
@@ -86,8 +102,8 @@ test('reads the tab from the query string on first render', () => {
 
   render(<App />)
 
-  expect(screen.getByRole('button', { name: /^Earn$/i })).toHaveAttribute('aria-current', 'page')
-  expect(screen.getByText(/Loading\.\.\./i)).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: /^赚取$/i })).toHaveAttribute('aria-current', 'page')
+  expect(screen.getByText(/加载中\.\.\./i)).toBeInTheDocument()
 })
 
 test('switches to the borrow placeholder shell when the borrow tab is selected', async () => {
@@ -95,12 +111,12 @@ test('switches to the borrow placeholder shell when the borrow tab is selected',
 
   render(<App />)
 
-  await user.click(screen.getByRole('button', { name: /^Borrow$/i }))
+  await user.click(screen.getByRole('button', { name: /^借贷$/i }))
 
-  expect(screen.getByRole('button', { name: /^Borrow$/i })).toHaveAttribute('aria-current', 'page')
-  expect(screen.getByRole('region', { name: /borrow panel/i })).toBeInTheDocument()
-  expect(screen.getByText(/Select a lending and borrowing token to see the available pairs\./i)).toBeInTheDocument()
-  expect(screen.queryByRole('region', { name: /swap panel/i })).not.toBeInTheDocument()
+  expect(screen.getByRole('button', { name: /^借贷$/i })).toHaveAttribute('aria-current', 'page')
+  expect(screen.getByRole('region', { name: /借贷面板/i })).toBeInTheDocument()
+  expect(screen.getByText(/选择抵押资产和借出资产后查看可用路径。/i)).toBeInTheDocument()
+  expect(screen.queryByRole('region', { name: /兑换面板/i })).not.toBeInTheDocument()
 })
 
 test('loads curated borrow routes after the user selects a supported pair', async () => {
@@ -109,17 +125,17 @@ test('loads curated borrow routes after the user selects a supported pair', asyn
 
   render(<App />)
 
-  await user.selectOptions(screen.getByLabelText(/Chain/i), 'base')
-  await user.selectOptions(screen.getByLabelText(/Collateral Token/i), 'ETH')
-  await user.selectOptions(screen.getByLabelText(/Borrow Token/i), 'USDC')
-  await user.type(screen.getByLabelText(/Borrow Amount/i), '1000')
-  await user.click(screen.getByRole('button', { name: /Show Routes/i }))
+  await user.selectOptions(screen.getByLabelText(/^链$/i), 'base')
+  await user.selectOptions(screen.getByLabelText(/抵押资产/i), 'ETH')
+  await user.selectOptions(screen.getByLabelText(/借出资产/i), 'USDC')
+  await user.type(screen.getByLabelText(/借款金额/i), '1000')
+  await user.click(screen.getByRole('button', { name: /查看路径/i }))
 
   const routeCard = await screen.findByRole('region', {
-    name: /base:morpho:eth-usdc-core route card/i,
+    name: /base:morpho:eth-usdc-core 路径卡片/i,
   })
 
-  expect(within(routeCard).getByText(/^Net Borrow APR$/i)).toBeInTheDocument()
+  expect(within(routeCard).getByText(/^净借款 APR$/i)).toBeInTheDocument()
 })
 
 test('shows route cards with market identity and cost metrics', async () => {
@@ -128,21 +144,21 @@ test('shows route cards with market identity and cost metrics', async () => {
 
   render(<App />)
 
-  await user.selectOptions(screen.getByLabelText(/Chain/i), 'base')
-  await user.selectOptions(screen.getByLabelText(/Collateral Token/i), 'ETH')
-  await user.selectOptions(screen.getByLabelText(/Borrow Token/i), 'USDC')
-  await user.click(screen.getByRole('button', { name: /Show Routes/i }))
+  await user.selectOptions(screen.getByLabelText(/^链$/i), 'base')
+  await user.selectOptions(screen.getByLabelText(/抵押资产/i), 'ETH')
+  await user.selectOptions(screen.getByLabelText(/借出资产/i), 'USDC')
+  await user.click(screen.getByRole('button', { name: /查看路径/i }))
 
   const routeCard = await screen.findByRole('region', {
-    name: /base:morpho:eth-usdc-core route card/i,
+    name: /base:morpho:eth-usdc-core 路径卡片/i,
   })
 
-  expect(within(routeCard).getByText(/^Market Key$/i)).toBeInTheDocument()
-  expect(within(routeCard).getByText(/^Borrow APR$/i)).toBeInTheDocument()
-  expect(within(routeCard).getByText(/^Supply APR$/i)).toBeInTheDocument()
-  expect(within(routeCard).getByText(/^Reward APR$/i)).toBeInTheDocument()
-  expect(within(routeCard).getByText(/^Max LTV$/i)).toBeInTheDocument()
-  expect(within(routeCard).getByText(/^Available Liquidity$/i)).toBeInTheDocument()
+  expect(within(routeCard).getByText(/^市场 Key$/i)).toBeInTheDocument()
+  expect(within(routeCard).getByText(/^借款 APR$/i)).toBeInTheDocument()
+  expect(within(routeCard).getByText(/^存款 APR$/i)).toBeInTheDocument()
+  expect(within(routeCard).getByText(/^奖励 APR$/i)).toBeInTheDocument()
+  expect(within(routeCard).getByText(/^最大 LTV$/i)).toBeInTheDocument()
+  expect(within(routeCard).getByText(/^可用流动性$/i)).toBeInTheDocument()
 })
 
 test('shows an empty curated state when the user switches to degen mode', async () => {
@@ -151,15 +167,15 @@ test('shows an empty curated state when the user switches to degen mode', async 
 
   render(<App />)
 
-  await user.selectOptions(screen.getByLabelText(/Chain/i), 'base')
-  await user.selectOptions(screen.getByLabelText(/Collateral Token/i), 'ETH')
-  await user.selectOptions(screen.getByLabelText(/Borrow Token/i), 'USDC')
-  await user.click(screen.getByRole('button', { name: /^Degen$/i }))
-  await user.click(screen.getByRole('button', { name: /Show Routes/i }))
+  await user.selectOptions(screen.getByLabelText(/^链$/i), 'base')
+  await user.selectOptions(screen.getByLabelText(/抵押资产/i), 'ETH')
+  await user.selectOptions(screen.getByLabelText(/借出资产/i), 'USDC')
+  await user.click(screen.getByRole('button', { name: /^进阶$/i }))
+  await user.click(screen.getByRole('button', { name: /查看路径/i }))
 
-  expect(await screen.findByText(/No live curated routes are available right now\./i)).toBeInTheDocument()
+  expect(await screen.findByText(/当前没有可用的精选路径。/i)).toBeInTheDocument()
   expect(screen.queryByText(/Morpho/i)).not.toBeInTheDocument()
-  expect(screen.getByRole('button', { name: /^Degen$/i })).toHaveAttribute('aria-pressed', 'true')
+  expect(screen.getByRole('button', { name: /^进阶$/i })).toHaveAttribute('aria-pressed', 'true')
 })
 
 test('shows a curated scope message when the selected pair is not in the allowlist', async () => {
@@ -167,13 +183,13 @@ test('shows a curated scope message when the selected pair is not in the allowli
   window.history.pushState({}, '', '/?tab=borrow')
   render(<App />)
 
-  await user.selectOptions(screen.getByLabelText(/Chain/i), 'bsc')
-  await user.selectOptions(screen.getByLabelText(/Collateral Token/i), 'BNB')
-  await user.selectOptions(screen.getByLabelText(/Borrow Token/i), 'USDT')
-  await user.click(screen.getByRole('button', { name: /Show Routes/i }))
+  await user.selectOptions(screen.getByLabelText(/^链$/i), 'bsc')
+  await user.selectOptions(screen.getByLabelText(/抵押资产/i), 'BNB')
+  await user.selectOptions(screen.getByLabelText(/借出资产/i), 'USDT')
+  await user.click(screen.getByRole('button', { name: /查看路径/i }))
 
   expect(
-    await screen.findByText(/This pair is not in the curated market scope yet/i),
+    await screen.findByText(/这个资产组合暂未进入精选市场范围。/i),
   ).toBeInTheDocument()
 })
 
@@ -216,12 +232,12 @@ test('keeps the latest borrow scan results when earlier requests resolve later',
 
   render(<App />)
 
-  await user.selectOptions(screen.getByLabelText(/Chain/i), 'base')
-  await user.selectOptions(screen.getByLabelText(/Collateral Token/i), 'ETH')
-  await user.selectOptions(screen.getByLabelText(/Borrow Token/i), 'USDC')
-  await user.click(screen.getByRole('button', { name: /Show Routes/i }))
-  await user.click(screen.getByRole('button', { name: /^Degen$/i }))
-  await user.click(screen.getByRole('button', { name: /Show Routes/i }))
+  await user.selectOptions(screen.getByLabelText(/^链$/i), 'base')
+  await user.selectOptions(screen.getByLabelText(/抵押资产/i), 'ETH')
+  await user.selectOptions(screen.getByLabelText(/借出资产/i), 'USDC')
+  await user.click(screen.getByRole('button', { name: /查看路径/i }))
+  await user.click(screen.getByRole('button', { name: /^进阶$/i }))
+  await user.click(screen.getByRole('button', { name: /查看路径/i }))
 
   resolveSecond?.({
     rows: [
@@ -245,7 +261,7 @@ test('keeps the latest borrow scan results when earlier requests resolve later',
   })
 
   expect(
-    await screen.findByRole('region', { name: /base:fluid:eth-usdc-core route card/i }),
+    await screen.findByRole('region', { name: /base:fluid:eth-usdc-core 路径卡片/i }),
   ).toBeInTheDocument()
 
   resolveFirst?.({
@@ -270,9 +286,9 @@ test('keeps the latest borrow scan results when earlier requests resolve later',
   })
 
   expect(
-    await screen.findByRole('region', { name: /base:fluid:eth-usdc-core route card/i }),
+    await screen.findByRole('region', { name: /base:fluid:eth-usdc-core 路径卡片/i }),
   ).toBeInTheDocument()
   expect(
-    screen.queryByRole('region', { name: /base:morpho:eth-usdc-core route card/i }),
+    screen.queryByRole('region', { name: /base:morpho:eth-usdc-core 路径卡片/i }),
   ).not.toBeInTheDocument()
 })

@@ -6,6 +6,7 @@ import {
   type BorrowMode,
   type BorrowScanResult,
 } from '../domain/borrowTypes'
+import type { AppCopy } from '../i18n'
 import { BorrowFilters } from './BorrowFilters'
 import { BorrowRouteList } from './BorrowRouteList'
 
@@ -14,7 +15,11 @@ type BorrowDisplayState =
   | { kind: 'loading' }
   | { kind: 'ready'; result: BorrowScanResult }
 
-export function BorrowPanel() {
+type BorrowPanelProps = {
+  copy: AppCopy['borrow']
+}
+
+export function BorrowPanel({ copy }: BorrowPanelProps) {
   const [query, setQuery] = useState(buildDefaultBorrowQuery)
   const [displayState, setDisplayState] = useState<BorrowDisplayState>({ kind: 'idle' })
   const scanRequestIdRef = useRef(0)
@@ -61,7 +66,7 @@ export function BorrowPanel() {
   }
 
   return (
-    <section className="borrow-shell" role="region" aria-label="borrow panel">
+    <section className="borrow-shell" role="region" aria-label={copy.panelLabel}>
       <div className="borrow-loading-card">
         <div className="borrow-loading-illustration" aria-hidden="true">
           <span className="borrow-loading-illustration-core" />
@@ -70,19 +75,19 @@ export function BorrowPanel() {
           <span className="borrow-loading-illustration-spark borrow-loading-illustration-spark--left" />
         </div>
         <p className="borrow-loading-copy">
-          {displayState.kind === 'loading' ? 'Loading routes...' : 'Loading...'}
+          {displayState.kind === 'loading' ? copy.loadingRoutes : copy.loading}
         </p>
       </div>
 
       <div className="borrow-info-card">
-        <div className="borrow-mode-tabs" aria-label="Borrow modes">
+        <div className="borrow-mode-tabs" aria-label={copy.panelLabel}>
           <button
             type="button"
             className={`borrow-mode-tab${query.mode === 'safe' ? ' is-active' : ''}`}
             aria-pressed={query.mode === 'safe'}
             onClick={() => updateMode('safe')}
           >
-            Safe
+            {copy.modes.safe}
           </button>
           <button
             type="button"
@@ -90,7 +95,7 @@ export function BorrowPanel() {
             aria-pressed={query.mode === 'degen'}
             onClick={() => updateMode('degen')}
           >
-            Degen
+            {copy.modes.degen}
           </button>
         </div>
 
@@ -99,6 +104,7 @@ export function BorrowPanel() {
           collateralToken={query.collateralToken}
           borrowToken={query.borrowToken}
           amount={query.amount}
+          copy={copy}
           onChainChange={updateChain}
           onCollateralTokenChange={updateCollateralToken}
           onBorrowTokenChange={updateBorrowToken}
@@ -107,7 +113,7 @@ export function BorrowPanel() {
         />
 
         {displayState.kind === 'ready' && displayState.result.reason === 'ok' ? (
-          <BorrowRouteList rows={displayState.result.rows} />
+          <BorrowRouteList rows={displayState.result.rows} copy={copy} />
         ) : (
           <div className="borrow-empty-state">
             <div className="borrow-illustration" aria-hidden="true">
@@ -119,12 +125,12 @@ export function BorrowPanel() {
               <span className="borrow-arrow borrow-arrow--bottom" />
             </div>
 
-            <p className="borrow-copy">Select a lending and borrowing token to see the available pairs.</p>
+            <p className="borrow-copy">{copy.empty}</p>
             {displayState.kind === 'ready' && displayState.result.reason === 'unsupported_pair' ? (
-              <p className="borrow-status-copy">This pair is not in the curated market scope yet.</p>
+              <p className="borrow-status-copy">{copy.unsupportedPair}</p>
             ) : null}
             {displayState.kind === 'ready' && displayState.result.reason === 'no_live_routes' ? (
-              <p className="borrow-status-copy">No live curated routes are available right now.</p>
+              <p className="borrow-status-copy">{copy.noLiveRoutes}</p>
             ) : null}
           </div>
         )}

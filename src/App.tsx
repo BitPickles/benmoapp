@@ -7,6 +7,7 @@ import { QuotePanel } from './components/QuotePanel'
 import { TopNav, type AppTab } from './components/TopNav'
 import { advanceMockExecution, fetchMockQuote, startMockExecution } from './data/swapApi'
 import { createInitialSwapState, swapReducer } from './domain/swapMachine'
+import { copy as localizedCopy, type Language } from './i18n'
 
 function readTabFromLocation(): AppTab {
   const value = new URLSearchParams(window.location.search).get('tab')
@@ -37,6 +38,8 @@ function writeTabToLocation(tab: AppTab) {
 function App() {
   const [state, dispatch] = useReducer(swapReducer, undefined, createInitialSwapState)
   const [activeTab, setActiveTab] = useState<AppTab>(() => readTabFromLocation())
+  const [language, setLanguage] = useState<Language>('zh')
+  const currentCopy = localizedCopy[language]
 
   useEffect(() => {
     function handlePopState() {
@@ -47,6 +50,10 @@ function App() {
     return () => window.removeEventListener('popstate', handlePopState)
   }, [])
 
+  useEffect(() => {
+    document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en'
+  }, [language])
+
   function handleTabChange(tab: AppTab) {
     setActiveTab(tab)
     writeTabToLocation(tab)
@@ -54,35 +61,35 @@ function App() {
 
   const primaryLabel = useMemo(() => {
     if (state.sessionStatus === 'unconnected') {
-      return 'Connect Wallet'
+      return currentCopy.swap.primary.connectWallet
     }
 
     if (state.quoteStatus !== 'quote_available') {
-      return 'Get Quotes'
+      return currentCopy.swap.primary.getQuotes
     }
 
     if (state.executionStatus === 'approval_required') {
-      return 'Approve'
+      return currentCopy.swap.primary.approve
     }
 
     if (state.executionStatus === 'message_signature_required') {
-      return 'Sign Intent'
+      return currentCopy.swap.primary.signIntent
     }
 
     if (state.executionStatus === 'tx_signature_required') {
-      return 'Sign Transaction'
+      return currentCopy.swap.primary.signTransaction
     }
 
     if (state.executionStatus === 'confirming') {
-      return 'Mark Confirmed'
+      return currentCopy.swap.primary.markConfirmed
     }
 
     if (state.executionStatus === 'success') {
-      return 'Swap Complete'
+      return currentCopy.swap.primary.swapComplete
     }
 
-    return 'Start Swap'
-  }, [state.executionStatus, state.quoteStatus, state.sessionStatus])
+    return currentCopy.swap.primary.startSwap
+  }, [currentCopy.swap.primary, state.executionStatus, state.quoteStatus, state.sessionStatus])
 
   async function handlePrimaryAction() {
     if (state.sessionStatus === 'unconnected') {
@@ -142,34 +149,19 @@ function App() {
   const actionCopy = useMemo(() => {
     switch (state.executionStatus) {
       case 'approval_required':
-        return {
-          title: 'Approve token before swap',
-          body: 'This route needs one approval before the transaction can continue.',
-        }
+        return currentCopy.swap.actionCopy.approval_required
       case 'message_signature_required':
-        return {
-          title: 'Sign order intent before execution',
-          body: 'This step signs an intent message. It does not send an on-chain transaction yet.',
-        }
+        return currentCopy.swap.actionCopy.message_signature_required
       case 'tx_signature_required':
-        return {
-          title: 'Approve the on-chain swap transaction',
-          body: 'This is the on-chain transaction signature step for the selected route.',
-        }
+        return currentCopy.swap.actionCopy.tx_signature_required
       case 'confirming':
-        return {
-          title: 'Waiting for on-chain confirmation',
-          body: 'The route has been broadcast. Confirm the final state once the chain receipt arrives.',
-        }
+        return currentCopy.swap.actionCopy.confirming
       case 'success':
-        return {
-          title: 'Swap complete',
-          body: 'The mocked execution has reached a successful terminal state.',
-        }
+        return currentCopy.swap.actionCopy.success
       default:
         return null
     }
-  }, [state.executionStatus])
+  }, [currentCopy.swap.actionCopy, state.executionStatus])
 
   return (
     <>
@@ -177,9 +169,12 @@ function App() {
         <div className="app-frame">
           <TopNav
             activeTab={activeTab}
-            walletLabel={state.sessionStatus === 'unconnected' ? 'Connect Wallet' : '0x71...fa'}
+            walletLabel={state.sessionStatus === 'unconnected' ? currentCopy.nav.connectWallet : currentCopy.nav.connectedWallet}
+            language={language}
+            copy={currentCopy.nav}
             onWalletAction={handlePrimaryAction}
             onTabChange={handleTabChange}
+            onLanguageChange={setLanguage}
           />
 
           {activeTab === 'swap' ? (
@@ -191,16 +186,17 @@ function App() {
                   quote={state.quote}
                   executionStatus={state.executionStatus}
                   actionCopy={actionCopy}
+                  copy={currentCopy.swap}
                 />
-                <QuotePanel quote={state.quote} actionCopy={actionCopy} />
+                <QuotePanel quote={state.quote} actionCopy={actionCopy} copy={currentCopy.quote} />
               </section>
 
-              <BetaFootnote />
+              <BetaFootnote copy={currentCopy.beta} />
             </>
           ) : null}
 
-          {activeTab === 'earn' ? <EarnPanel /> : null}
-          {activeTab === 'borrow' ? <BorrowPanel /> : null}
+          {activeTab === 'earn' ? <EarnPanel copy={currentCopy.earn} /> : null}
+          {activeTab === 'borrow' ? <BorrowPanel copy={currentCopy.borrow} /> : null}
         </div>
       </main>
     </>

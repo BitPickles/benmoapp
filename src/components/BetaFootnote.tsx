@@ -1,7 +1,13 @@
-export function BetaFootnote() {
+import type { AppCopy } from '../i18n'
+
+type BetaFootnoteProps = {
+  copy: AppCopy['beta']
+}
+
+export function BetaFootnote({ copy }: BetaFootnoteProps) {
   return (
     <p className="beta-footnote">
-      This product is still in beta. If you run into any issue please let us know in the Pangolins team channel.
+      {copy.footnote}
     </p>
   )
 }

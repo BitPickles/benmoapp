@@ -3,3 +3,4 @@ dist/
 *.log
 *.tsbuildinfo
 reference-pangolins-light-*.png
+reference-pangolins-bilingual-*.png

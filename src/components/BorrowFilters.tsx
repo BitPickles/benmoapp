@@ -3,12 +3,14 @@ import {
   supportedBorrowChains,
   type BorrowChain,
 } from '../domain/borrowTypes'
+import type { AppCopy } from '../i18n'
 
 type BorrowFiltersProps = {
   chain: BorrowChain
   collateralToken: string
   borrowToken: string
   amount: string
+  copy: AppCopy['borrow']
   onChainChange: (chain: BorrowChain) => void
   onCollateralTokenChange: (token: string) => void
   onBorrowTokenChange: (token: string) => void
@@ -23,6 +25,7 @@ export function BorrowFilters({
   collateralToken,
   borrowToken,
   amount,
+  copy,
   onChainChange,
   onCollateralTokenChange,
   onBorrowTokenChange,
@@ -37,7 +40,7 @@ export function BorrowFilters({
   return (
     <form onSubmit={handleSubmit}>
       <label>
-        Chain
+        {copy.fields.chain}
         <select value={chain} onChange={(event) => onChainChange(event.target.value as BorrowChain)}>
           {supportedBorrowChains.map((chain) => (
             <option key={chain} value={chain}>
@@ -48,36 +51,36 @@ export function BorrowFilters({
       </label>
 
       <label>
-        Collateral Token
+        {copy.fields.collateralToken}
         <select
           value={collateralToken}
           onChange={(event) => onCollateralTokenChange(event.target.value)}
         >
           {tokenOptions.map((token) => (
             <option key={token || 'empty-collateral'} value={token}>
-              {token || 'Select collateral'}
+              {token || copy.placeholders.collateral}
             </option>
           ))}
         </select>
       </label>
 
       <label>
-        Borrow Token
+        {copy.fields.borrowToken}
         <select value={borrowToken} onChange={(event) => onBorrowTokenChange(event.target.value)}>
           {tokenOptions.map((token) => (
             <option key={token || 'empty-borrow'} value={token}>
-              {token || 'Select borrow token'}
+              {token || copy.placeholders.borrow}
             </option>
           ))}
         </select>
       </label>
 
       <label>
-        Borrow Amount
+        {copy.fields.amount}
         <input value={amount} onChange={(event) => onAmountChange(event.target.value)} />
       </label>
 
-      <button type="submit">Show Routes</button>
+      <button type="submit">{copy.showRoutes}</button>
     </form>
   )
 }

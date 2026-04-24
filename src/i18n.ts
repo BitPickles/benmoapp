@@ -1,0 +1,271 @@
+import type { ExecutionStatus } from './domain/swapMachine'
+
+export type Language = 'zh' | 'en'
+
+export const languageOptions: Array<{ id: Language; label: string }> = [
+  { id: 'zh', label: '中文' },
+  { id: 'en', label: 'English' },
+]
+
+export const copy = {
+  zh: {
+    nav: {
+      tabs: {
+        swap: '兑换',
+        earn: '赚取',
+        borrow: '借贷',
+      },
+      connectWallet: '连接钱包',
+      connectedWallet: '0x71...fa',
+      languageLabel: '语言',
+      primaryNavLabel: '主导航',
+    },
+    swap: {
+      panelLabel: '兑换面板',
+      chain: '链',
+      hideIp: '隐藏 IP',
+      settings: '设置',
+      ethereum: 'Ethereum',
+      youSell: '出售',
+      youBuy: '买入',
+      selectToken: '选择代币',
+      slippage: '滑点 (%)',
+      flipTokens: '切换代币',
+      bestRoute: '最优路径',
+      requestQuote: '获取报价后会加载最优路径和执行步骤。',
+      routeReady: '已准备好。继续完成下一步。',
+      primary: {
+        connectWallet: '连接钱包',
+        getQuotes: '获取报价',
+        approve: '授权',
+        signIntent: '签署意图',
+        signTransaction: '签署交易',
+        markConfirmed: '标记确认',
+        swapComplete: '兑换完成',
+        startSwap: '开始兑换',
+      },
+      status: {
+        execution_idle: '准备询价',
+        execution_preparing: '准备路径',
+        approval_required: '需要授权',
+        message_signature_required: '需要签署意图',
+        tx_signature_required: '需要签署交易',
+        broadcasting: '广播中',
+        confirming: '链上确认中',
+        success: '兑换完成',
+        retryable_failure: '可重试',
+        terminal_failure: '执行失败',
+      } satisfies Record<ExecutionStatus, string>,
+      actionCopy: {
+        approval_required: {
+          title: '先授权代币',
+          body: '这条路径需要一次授权，之后才能继续发起交易。',
+        },
+        message_signature_required: {
+          title: '签署订单意图',
+          body: '这一步只签署意图消息，还不会发送链上交易。',
+        },
+        tx_signature_required: {
+          title: '签署链上兑换交易',
+          body: '这是所选路径的链上交易签名步骤。',
+        },
+        confirming: {
+          title: '等待链上确认',
+          body: '交易已经广播，等待链上回执后确认最终状态。',
+        },
+        success: {
+          title: '兑换完成',
+          body: '当前 mock 执行流程已经到达成功终态。',
+        },
+      },
+    },
+    quote: {
+      initialHeading: '每次交易前，看清路径',
+      quotedHeading: 'ETH -> USDC 最优路径',
+      benefits: {
+        free: '免费使用',
+        gas: 'Gas 估算',
+        privacy: '隐私保护',
+        bestReturn: '更优回报',
+      },
+      initialBody: 'Pangolins 会比较可执行路径、预估成本和供应商行为，用更清晰的界面给内部评审使用。',
+      provider: '供应商',
+      quoteId: '报价 ID',
+      continueFlow: '继续在左侧面板完成 mock 执行流程。',
+      link: '查看可用路径',
+    },
+    beta: {
+      footnote: '当前产品仍处于内测阶段。如遇到问题，请在 Pangolins 团队频道反馈。',
+    },
+    earn: {
+      panelLabel: '赚取面板',
+      loading: '加载中...',
+    },
+    borrow: {
+      panelLabel: '借贷面板',
+      routesLabel: '借贷路径',
+      loading: '加载中...',
+      loadingRoutes: '正在加载路径...',
+      modes: {
+        safe: '稳健',
+        degen: '进阶',
+      },
+      fields: {
+        chain: '链',
+        collateralToken: '抵押资产',
+        borrowToken: '借出资产',
+        amount: '借款金额',
+      },
+      placeholders: {
+        collateral: '选择抵押资产',
+        borrow: '选择借出资产',
+      },
+      showRoutes: '查看路径',
+      empty: '选择抵押资产和借出资产后查看可用路径。',
+      unsupportedPair: '这个资产组合暂未进入精选市场范围。',
+      noLiveRoutes: '当前没有可用的精选路径。',
+      routeCard: '路径卡片',
+      protocol: '协议',
+      marketKey: '市场 Key',
+      metrics: {
+        borrowApr: '借款 APR',
+        supplyApr: '存款 APR',
+        rewardApr: '奖励 APR',
+        netBorrowApr: '净借款 APR',
+        maxLtv: '最大 LTV',
+        availableLiquidityUsd: '可用流动性',
+      },
+    },
+  },
+  en: {
+    nav: {
+      tabs: {
+        swap: 'Swap',
+        earn: 'Earn',
+        borrow: 'Borrow',
+      },
+      connectWallet: 'Connect Wallet',
+      connectedWallet: '0x71...fa',
+      languageLabel: 'Language',
+      primaryNavLabel: 'Primary',
+    },
+    swap: {
+      panelLabel: 'swap panel',
+      chain: 'Chain',
+      hideIp: 'Hide IP',
+      settings: 'Settings',
+      ethereum: 'Ethereum',
+      youSell: 'You sell',
+      youBuy: 'You buy',
+      selectToken: 'Select Token',
+      slippage: 'Slippage (%)',
+      flipTokens: 'Flip tokens',
+      bestRoute: 'Best Route',
+      requestQuote: 'Request a quote to load the best route and execution steps.',
+      routeReady: 'is ready. Continue with the next step.',
+      primary: {
+        connectWallet: 'Connect Wallet',
+        getQuotes: 'Get Quotes',
+        approve: 'Approve',
+        signIntent: 'Sign Intent',
+        signTransaction: 'Sign Transaction',
+        markConfirmed: 'Mark Confirmed',
+        swapComplete: 'Swap Complete',
+        startSwap: 'Start Swap',
+      },
+      status: {
+        execution_idle: 'Ready to quote',
+        execution_preparing: 'Preparing route',
+        approval_required: 'Approval required',
+        message_signature_required: 'Message signature required',
+        tx_signature_required: 'Transaction signature required',
+        broadcasting: 'Broadcasting',
+        confirming: 'Confirming on chain',
+        success: 'Swap complete',
+        retryable_failure: 'Retry available',
+        terminal_failure: 'Execution failed',
+      } satisfies Record<ExecutionStatus, string>,
+      actionCopy: {
+        approval_required: {
+          title: 'Approve token before swap',
+          body: 'This route needs one approval before the transaction can continue.',
+        },
+        message_signature_required: {
+          title: 'Sign order intent before execution',
+          body: 'This step signs an intent message. It does not send an on-chain transaction yet.',
+        },
+        tx_signature_required: {
+          title: 'Approve the on-chain swap transaction',
+          body: 'This is the on-chain transaction signature step for the selected route.',
+        },
+        confirming: {
+          title: 'Waiting for on-chain confirmation',
+          body: 'The route has been broadcast. Confirm the final state once the chain receipt arrives.',
+        },
+        success: {
+          title: 'Swap complete',
+          body: 'The mocked execution has reached a successful terminal state.',
+        },
+      },
+    },
+    quote: {
+      initialHeading: 'Route clarity before every trade',
+      quotedHeading: 'ETH -> USDC best route',
+      benefits: {
+        free: 'Totally Free',
+        gas: 'Gas Estimation',
+        privacy: 'Preserves Privacy',
+        bestReturn: 'Best Return',
+      },
+      initialBody: 'Pangolins compares executable routes, estimated cost, and provider behavior behind a calmer interface for internal review.',
+      provider: 'Provider',
+      quoteId: 'Quote ID',
+      continueFlow: 'Continue in the left panel to walk through the mocked execution session.',
+      link: 'Review available routes',
+    },
+    beta: {
+      footnote: 'This product is still in beta. If you run into any issue please let us know in the Pangolins team channel.',
+    },
+    earn: {
+      panelLabel: 'earn panel',
+      loading: 'Loading...',
+    },
+    borrow: {
+      panelLabel: 'borrow panel',
+      routesLabel: 'borrow routes',
+      loading: 'Loading...',
+      loadingRoutes: 'Loading routes...',
+      modes: {
+        safe: 'Safe',
+        degen: 'Degen',
+      },
+      fields: {
+        chain: 'Chain',
+        collateralToken: 'Collateral Token',
+        borrowToken: 'Borrow Token',
+        amount: 'Borrow Amount',
+      },
+      placeholders: {
+        collateral: 'Select collateral',
+        borrow: 'Select borrow token',
+      },
+      showRoutes: 'Show Routes',
+      empty: 'Select a lending and borrowing token to see the available pairs.',
+      unsupportedPair: 'This pair is not in the curated market scope yet.',
+      noLiveRoutes: 'No live curated routes are available right now.',
+      routeCard: 'route card',
+      protocol: 'Protocol',
+      marketKey: 'Market Key',
+      metrics: {
+        borrowApr: 'Borrow APR',
+        supplyApr: 'Supply APR',
+        rewardApr: 'Reward APR',
+        netBorrowApr: 'Net Borrow APR',
+        maxLtv: 'Max LTV',
+        availableLiquidityUsd: 'Available Liquidity',
+      },
+    },
+  },
+} as const
+
+export type AppCopy = (typeof copy)[Language]

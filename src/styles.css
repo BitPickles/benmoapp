@@ -137,8 +137,39 @@ select:focus-visible {
   color: #ffffff;
 }
 
-.wallet-button {
+.top-actions {
+  display: inline-flex;
   justify-self: end;
+  align-items: center;
+  gap: 10px;
+}
+
+.language-toggle {
+  display: inline-flex;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.language-button {
+  min-height: 34px;
+  border: 0;
+  border-radius: 6px;
+  padding: 0 10px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.language-button.is-active {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.wallet-button {
   min-width: 124px;
   border: 1px solid var(--accent-strong);
   border-radius: 8px;
@@ -1047,7 +1078,7 @@ select:focus-visible {
   }
 
   .brand-lockup,
-  .wallet-button {
+  .top-actions {
     justify-self: center;
   }
 
@@ -1084,6 +1115,12 @@ select:focus-visible {
   .nav-pills {
     width: 100%;
     overflow: auto;
+  }
+
+  .top-actions {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 
   .nav-pill {

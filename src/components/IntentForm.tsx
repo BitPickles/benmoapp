@@ -1,4 +1,5 @@
 import type { ExecutionStatus, Quote } from '../domain/swapMachine'
+import type { AppCopy } from '../i18n'
 
 type IntentFormProps = {
   primaryLabel: string
@@ -6,19 +7,7 @@ type IntentFormProps = {
   quote: Quote | null
   executionStatus: ExecutionStatus
   actionCopy: { title: string; body: string } | null
-}
-
-const statusMap: Record<ExecutionStatus, string> = {
-  execution_idle: 'Ready to quote',
-  execution_preparing: 'Preparing route',
-  approval_required: 'Approval required',
-  message_signature_required: 'Message signature required',
-  tx_signature_required: 'Transaction signature required',
-  broadcasting: 'Broadcasting',
-  confirming: 'Confirming on chain',
-  success: 'Swap complete',
-  retryable_failure: 'Retry available',
-  terminal_failure: 'Execution failed',
+  copy: AppCopy['swap']
 }
 
 export function IntentForm({
@@ -27,20 +16,21 @@ export function IntentForm({
   quote,
   executionStatus,
   actionCopy,
+  copy,
 }: IntentFormProps) {
   const showStatusChip = executionStatus !== 'execution_idle'
   const showBestRouteBanner = Boolean(quote || actionCopy)
 
   return (
-    <section className="swap-card" role="region" aria-label="swap panel">
+    <section className="swap-card" role="region" aria-label={copy.panelLabel}>
       <div className="card-header-row">
-        <span className="card-title">Chain</span>
+        <span className="card-title">{copy.chain}</span>
         <div className="chain-toolbar">
-          <span className="toolbar-label">Hide IP</span>
+          <span className="toolbar-label">{copy.hideIp}</span>
           <span className="toggle-shell" aria-hidden="true">
             <span className="toggle-thumb" />
           </span>
-          <button type="button" className="icon-button" aria-label="Settings">
+          <button type="button" className="icon-button" aria-label={copy.settings}>
             <span className="icon-button-glyph icon-button-glyph--settings" aria-hidden="true" />
           </button>
         </div>
@@ -49,14 +39,14 @@ export function IntentForm({
       <button type="button" className="chain-selector">
         <span className="token-chip token-chip--compact">
           <span className="token-dot">E</span>
-          Ethereum
+          {copy.ethereum}
         </span>
         <span className="chevron" aria-hidden="true" />
       </button>
 
       <div className="token-panel">
         <div className="token-panel-copy">
-          <span className="muted-label">You sell</span>
+          <span className="muted-label">{copy.youSell}</span>
           <p className="amount-value">0</p>
         </div>
         <button type="button" className="token-selector">
@@ -80,19 +70,19 @@ export function IntentForm({
         </div>
       </div>
 
-      <button type="button" className="swap-direction-button" aria-label="Flip tokens">
+      <button type="button" className="swap-direction-button" aria-label={copy.flipTokens}>
         <span className="swap-direction-glyph" aria-hidden="true" />
       </button>
 
       <div className="token-panel token-panel--buy">
         <div className="token-panel-copy">
-          <span className="muted-label">You buy</span>
+          <span className="muted-label">{copy.youBuy}</span>
           <p className="amount-value amount-value--ghost">{quote ? '1,998.40' : '0'}</p>
         </div>
         <button type="button" className="token-selector">
           <span className="token-chip">
             <span className="token-dot token-dot--buy">$</span>
-            {quote ? 'USDC' : 'Select Token'}
+            {quote ? 'USDC' : copy.selectToken}
           </span>
           <span className="chevron" aria-hidden="true" />
         </button>
@@ -100,8 +90,8 @@ export function IntentForm({
 
       <div className="slippage-block">
         <div className="card-title-row">
-          <span className="card-title">Slippage (%)</span>
-          {showStatusChip ? <span className="status-chip">{statusMap[executionStatus]}</span> : null}
+          <span className="card-title">{copy.slippage}</span>
+          {showStatusChip ? <span className="status-chip">{copy.status[executionStatus]}</span> : null}
         </div>
         <div className="slippage-row">
           <div className="slippage-input">0.3</div>
@@ -129,8 +119,8 @@ export function IntentForm({
         </div>
       ) : showBestRouteBanner ? (
         <div className="action-banner action-banner--quiet">
-          <p className="action-banner-title">Best Route</p>
-          <p className="action-banner-body">{quote ? `${quote.providerName} is ready. Continue with the next step.` : 'Request a quote to load the best route and execution steps.'}</p>
+          <p className="action-banner-title">{copy.bestRoute}</p>
+          <p className="action-banner-body">{quote ? `${quote.providerName} ${copy.routeReady}` : copy.requestQuote}</p>
         </div>
       ) : null}
 
